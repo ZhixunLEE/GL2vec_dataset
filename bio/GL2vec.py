@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import networkx as nx
 from typing import List
@@ -94,10 +95,13 @@ class GL2Vec(Estimator):
 
 
 def main():
-    mode = input("select supervised or unsupervised dataset: ")
-    root = 'dataset/' + mode
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dataset', type=str, default='unsupervised',
+                        help='choose supervised or unsupervised dataset')
+    args = parser.parse_args()
+    root = 'dataset/' + args.dataset
     print("loading data...")
-    d_unsupervised = BioDataset(root, data_type=mode)
+    d_unsupervised = BioDataset(root, data_type=args.dataset)
     G_list = []
     for i in range(len(d_unsupervised.raw_file_names)):
         G_list.append(graph_data_obj_to_nx(d_unsupervised[i]))
